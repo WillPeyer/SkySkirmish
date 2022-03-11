@@ -138,12 +138,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.item.rawValue {
                 body2.node?.removeFromParent()
-                print(mainWeaponLevel)
-                mainWeaponLevel += 1
-                print(mainWeaponLevel)
+                if(mainWeaponLevel < mainWeaponIntervals.count){
+                    mainWeaponLevel += 1
+                }
                 MainWeaponTimer?.invalidate()
                 MainWeaponTimer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[mainWeaponLevel], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
-                print(MainWeaponTimer?.timeInterval)
             }
         }
     }
