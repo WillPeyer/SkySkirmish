@@ -58,7 +58,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         testBox.setScale(0.5)
         testBox.zPosition = 2
         testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
-        testBox.physicsBody?.affectedByGravity = false
+        testBox.physicsBody?.isDynamic = false
+        testBox.physicsBody?.isResting = true
+        testBox.physicsBody!.affectedByGravity = false
         testBox.physicsBody?.categoryBitMask = CollisionType.enemy.rawValue
         testBox.physicsBody?.collisionBitMask = CollisionType.player.rawValue
         testBox.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
@@ -77,9 +79,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("bruhggg")
         
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            print("bruh")
-            body1 = contact.bodyA
-            body2 = contact.bodyB
+            return
+            //print("bruh")
+            //body1 = contact.bodyA
+            //body2 = contact.bodyB
         } else {
             body1 = contact.bodyB
             body2 = contact.bodyA
