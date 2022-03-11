@@ -17,10 +17,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isPlayerAlive:Bool = true
     var lastUpdateTime: CFTimeInterval = 0
     var timer: Timer?
+    var CooldownTimer: Timer?
+    var MainWeaponTimer: Timer?
+    var WingCannonsTimer: Timer?
     
     var mainWeaponLevel = 0
     let mainWeaponIntervals = [0.425, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275, 0.25, 0.225, 0.2]
     let mainWeaponDamage = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.25]
+    var cooldown = false
     
     enum CollisionType: UInt32 {
         case none = 0
@@ -52,19 +56,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(player)
         
         //test boxes for collsion testing
-//        testBox = SKSpriteNode(imageNamed: "blueRectangle")
-//        testBox.name = "Box"
-//        testBox.position = CGPoint(x: 200, y: 400)
-//        testBox.setScale(0.5)
-//        testBox.zPosition = 2
-//        testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
-//        testBox.physicsBody?.isDynamic = false
-//        testBox.physicsBody?.isResting = true
-//        testBox.physicsBody!.affectedByGravity = false
-//        testBox.physicsBody?.categoryBitMask = CollisionType.enemy.rawValue
-//        testBox.physicsBody?.collisionBitMask = CollisionType.player.rawValue
-//        testBox.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
-//        self.addChild(testBox)
+        testBox = SKSpriteNode(imageNamed: "blueRectangle")
+        testBox.name = "Box"
+        testBox.position = CGPoint(x: 100, y: 300)
+        testBox.setScale(0.5)
+        testBox.zPosition = 2
+        testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
+        testBox.physicsBody?.isDynamic = false
+        testBox.physicsBody?.isResting = true
+        testBox.physicsBody!.affectedByGravity = false
+        testBox.physicsBody?.categoryBitMask = CollisionType.enemy.rawValue
+        testBox.physicsBody?.collisionBitMask = CollisionType.player.rawValue
+        testBox.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
+        self.addChild(testBox)
         
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
         upgrade.name = "upgrade"
@@ -82,58 +86,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         timerMainWeapon(Level: mainWeaponLevel)
         //timerWingCannons()
+        cooldownTimer()
         
         backgroundColor = SKColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
     
     func didBegin (_ contact: SKPhysicsContact) {
-        
-        var body1 = SKPhysicsBody()
-        var body2 = SKPhysicsBody()
-        print("bruhggg")
-        
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            print("bruh")
-            body1 = contact.bodyA
-            body2 = contact.bodyB
-        } else {
-            body1 = contact.bodyB
-            body2 = contact.bodyA
-            print("buddy")
-        }
-        
-        if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
-            if body1.node != nil {
-                //explosion
+        if(!cooldown){
+            cooldown = true
+            var body1 = SKPhysicsBody()
+            var body2 = SKPhysicsBody()
+            print("bruhggg")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                print("bruh")
+                body1 = contact.bodyA
+                body2 = contact.bodyB
+            } else {
+                body1 = contact.bodyB
+                body2 = contact.bodyA
+                print("buddy")
             }
             
-            if body2.node != nil {
-                //explosion
+            if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
+                if body1.node != nil {
+                    //explosion
+                }
+                
+                if body2.node != nil {
+                    //explosion
+                }
+                
+                //body1.node?.removeFromParent()
+                //body2.node?.removeFromParent()
+                //runGameOver()
             }
             
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-            //runGameOver()
-        }
-        
-        if body1.categoryBitMask == CollisionType.bullet.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
-            if body1.node != nil {
-                //explosion
+            if body1.categoryBitMask == CollisionType.bullet.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
+                if body1.node != nil {
+                    //explosion
+                }
+                
+                if body2.node != nil {
+                    //explosion
+                }
+                
+                body1.node?.removeFromParent()
+                body2.node?.removeFromParent()
+                //runGameOver()
             }
-            
-            if body2.node != nil {
-                //explosion
-            }
-            
-            body1.node?.removeFromParent()
-            body2.node?.removeFromParent()
-            //runGameOver()
-        }
-        
-        if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.item.rawValue {
-            body2.node?.removeFromParent()
-            mainWeaponLevel += 5
 
+            if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.item.rawValue {
+                body2.node?.removeFromParent()
+                print(mainWeaponLevel)
+                mainWeaponLevel += 1
+                print(mainWeaponLevel)
+                MainWeaponTimer?.invalidate()
+                MainWeaponTimer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[mainWeaponLevel], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
+                print(MainWeaponTimer?.timeInterval)
+            }
         }
     }
     
@@ -208,11 +219,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     //timers for the player's weapons
     func timerMainWeapon(Level: Int) {
-        timer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[Level], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
+        MainWeaponTimer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[Level], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
     }
     
     func timerWingCannons() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.wingCannons), userInfo: nil, repeats: true)
+        WingCannonsTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.wingCannons), userInfo: nil, repeats: true)
+    }
+    
+    func cooldownTimer() {
+        CooldownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { Timer in
+            self.cooldown = false
+        })
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
