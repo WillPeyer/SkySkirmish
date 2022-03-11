@@ -44,7 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.name = "Player"
         player.position = CGPoint(x: 0, y: -400)
         player.zPosition = 2
-        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+        player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.texture!.size())
         player.physicsBody?.affectedByGravity = false
         player.physicsBody?.categoryBitMask = CollisionType.player.rawValue
         player.physicsBody?.collisionBitMask = CollisionType.enemy.rawValue
@@ -71,7 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         upgrade.position = CGPoint(x: 200, y: 400)
         upgrade.setScale(1)
         upgrade.zPosition = 1
-        upgrade.physicsBody = SKPhysicsBody(rectangleOf: upgrade.size)
+        upgrade.physicsBody = SKPhysicsBody(texture: upgrade.texture!, size: upgrade.texture!.size())
         upgrade.physicsBody?.isDynamic = false
         upgrade.physicsBody?.isResting = true
         upgrade.physicsBody!.affectedByGravity = false
@@ -93,13 +93,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("bruhggg")
         
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            return
-            //print("bruh")
-            //body1 = contact.bodyA
-            //body2 = contact.bodyB
+            print("bruh")
+            body1 = contact.bodyA
+            body2 = contact.bodyB
         } else {
             body1 = contact.bodyB
             body2 = contact.bodyA
+            print("buddy")
         }
         
         if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
