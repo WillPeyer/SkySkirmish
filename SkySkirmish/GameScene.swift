@@ -154,6 +154,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 if(enemys[index].HP <= 0){
                     body2.node?.removeFromParent()
+                    enemys.remove(at: index)
                 }
                 //body2.node?.removeFromParent()
                 //runGameOver()
