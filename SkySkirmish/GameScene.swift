@@ -7,11 +7,13 @@
 
 import SpriteKit
 import GameplayKit
+import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
+    var enemys: [Enemy] = []
     
     var gamePaused:Bool = false
     var isPlayerAlive:Bool = true
@@ -20,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var CooldownTimer: Timer?
     var MainWeaponTimer: Timer?
     var WingCannonsTimer: Timer?
+    var EnemyTimer: Timer?
     
     var mainWeaponLevel = 0
     let mainWeaponIntervals = [0.425, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275, 0.25, 0.225, 0.2]
@@ -56,6 +59,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(player)
         
         //test boxes for collsion testing
+        var testEnemy: Enemy = Enemy()
+        testEnemy.HP = 1000
         testBox = SKSpriteNode(imageNamed: "blueRectangle")
         testBox.name = "Box"
         testBox.position = CGPoint(x: 100, y: 300)
@@ -68,7 +73,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         testBox.physicsBody?.categoryBitMask = CollisionType.enemy.rawValue
         testBox.physicsBody?.collisionBitMask = CollisionType.player.rawValue
         testBox.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
-        self.addChild(testBox)
+        testEnemy.enemyNode = testBox
+        enemys.append(testEnemy)
+        self.addChild(testEnemy.enemyNode)
         
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
         upgrade.name = "upgrade"
@@ -131,8 +138,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     //explosion
                 }
                 
+                var isFound = false
+                var index = 0
+                while(!isFound){
+                    var count = 0
+                    if(enemys[count].enemyNode.name == body2.node?.name){
+                        enemys[count].HP -= 100
+                        index = count
+                        isFound = true
+                    }
+                    count+=1
+                }
+                
                 body1.node?.removeFromParent()
-                body2.node?.removeFromParent()
+                
+                if(enemys[index].HP <= 0){
+                    body2.node?.removeFromParent()
+                }
+                //body2.node?.removeFromParent()
                 //runGameOver()
             }
 
@@ -247,10 +270,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 }
 
-extension SKSpriteNode{
-    var HP: Int {
-        return 2
-    }
+struct Enemy{
+    var enemyNode: SKSpriteNode = SKSpriteNode(imageNamed: "blueRectangle")
+    var HP: Int = 0
 }
 
 
