@@ -244,4 +244,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
     }
+    
 }
+
+extension SKSpriteNode{
+    var HP: Int {
+        return 2
+    }
+}
+
+
