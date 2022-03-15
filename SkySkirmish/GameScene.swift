@@ -143,7 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 while(!isFound){
                     var count = 0
                     if(enemys[count].enemyNode.name == body2.node?.name){
-                        enemys[count].HP -= 100
+                        enemys[count].HP -= mainWeaponDamage[mainWeaponLevel]
                         index = count
                         isFound = true
                     }
@@ -251,8 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func cooldownTimer() {
         CooldownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { Timer in
-            self.cooldown = false
-        })
+            self.cooldown = false })
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
