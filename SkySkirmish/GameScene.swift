@@ -13,7 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
-    var enemys: [Enemy] = []
+    var enemies: [Enemy] = []
     
     var gamePaused:Bool = false
     var isPlayerAlive:Bool = true
@@ -74,7 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         testBox.physicsBody?.collisionBitMask = CollisionType.player.rawValue
         testBox.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
         testEnemy.enemyNode = testBox
-        enemys.append(testEnemy)
+        enemies.append(testEnemy)
         self.addChild(testEnemy.enemyNode)
         
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
@@ -142,8 +142,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 var index = 0
                 while(!isFound){
                     var count = 0
-                    if(enemys[count].enemyNode.name == body2.node?.name){
-                        enemys[count].HP -= mainWeaponDamage[mainWeaponLevel]
+                    if(enemies[count].enemyNode.name == body2.node?.name){
+                        enemies[count].HP -= mainWeaponDamage[mainWeaponLevel]
                         index = count
                         isFound = true
                     }
@@ -152,9 +152,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 body1.node?.removeFromParent()
                 
-                if(enemys[index].HP <= 0){
+                if(enemies[index].HP <= 0){
                     body2.node?.removeFromParent()
-                    enemys.remove(at: index)
+                    enemies.remove(at: index)
                 }
                 //body2.node?.removeFromParent()
                 //runGameOver()
