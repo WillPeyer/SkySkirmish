@@ -23,7 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var mainWeaponLevel = 0
     let mainWeaponIntervals = [0.425, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275, 0.25, 0.225, 0.2]
-    let mainWeaponDamage = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.25]
+    let mainWeaponDamage = [100, 125, 150, 175, 200, 225, 250, 275, 300, 325]
     var cooldown = false
     
     enum CollisionType: UInt32 {
@@ -139,7 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.item.rawValue {
                 body2.node?.removeFromParent()
                 if(mainWeaponLevel < mainWeaponIntervals.count){
-                    mainWeaponLevel += 1
+                    mainWeaponLevel += 8
                 }
                 MainWeaponTimer?.invalidate()
                 MainWeaponTimer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[mainWeaponLevel], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
