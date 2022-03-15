@@ -230,11 +230,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func touchDown(atPoint pos : CGPoint) {
         //movement code
-        let movementSpeed = 3000.0
-        let x = pos.x - player.position.x
-        let y = pos.y - player.position.y
         var tempPos : CGPoint = pos
         tempPos.y += 50
+        let movementSpeed = 3000.0
+        let x = tempPos.x - player.position.x
+        let y = tempPos.y - player.position.y
         let distance = sqrt(x * x + y * y)
         
         player.run(SKAction.move(to: tempPos, duration: Double(distance) / movementSpeed))
