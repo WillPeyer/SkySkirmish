@@ -59,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         testBox = SKSpriteNode(imageNamed: "blueRectangle")
         testBox.name = "Box"
         testBox.position = CGPoint(x: 100, y: 300)
-        testBox.setScale(0.5)
+        testBox.setScale(0.2)
         testBox.zPosition = 2
         testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
         testBox.physicsBody?.isDynamic = false
