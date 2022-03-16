@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50164B8A27E22F660012F399 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50164B8927E22F660012F399 /* MainMenuScene.swift */; };
 		90C9775127B6C5AC00B77907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C9775027B6C5AC00B77907 /* AppDelegate.swift */; };
 		90C9775327B6C5AC00B77907 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 90C9775227B6C5AC00B77907 /* GameScene.sks */; };
 		90C9775527B6C5AC00B77907 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 90C9775427B6C5AC00B77907 /* Actions.sks */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50164B8927E22F660012F399 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		90C9774D27B6C5AC00B77907 /* SkySkirmish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkySkirmish.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90C9775027B6C5AC00B77907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90C9775227B6C5AC00B77907 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				90C9775227B6C5AC00B77907 /* GameScene.sks */,
 				90C9775427B6C5AC00B77907 /* Actions.sks */,
 				90C9775627B6C5AC00B77907 /* GameScene.swift */,
+				50164B8927E22F660012F399 /* MainMenuScene.swift */,
 				90C9775827B6C5AC00B77907 /* GameViewController.swift */,
 				90C9775A27B6C5AC00B77907 /* Main.storyboard */,
 				90C9775D27B6C5B100B77907 /* Assets.xcassets */,
@@ -146,6 +149,7 @@
 			files = (
 				90C9775727B6C5AC00B77907 /* GameScene.swift in Sources */,
 				90C9775927B6C5AC00B77907 /* GameViewController.swift in Sources */,
+				50164B8A27E22F660012F399 /* MainMenuScene.swift in Sources */,
 				90C9775127B6C5AC00B77907 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +299,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 883DK65VTV;
+				DEVELOPMENT_TEAM = W64R5BX9UC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -323,7 +327,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 883DK65VTV;
+				DEVELOPMENT_TEAM = W64R5BX9UC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
