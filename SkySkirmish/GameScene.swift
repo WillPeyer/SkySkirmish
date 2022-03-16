@@ -7,7 +7,6 @@
 
 import SpriteKit
 import GameplayKit
-import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
