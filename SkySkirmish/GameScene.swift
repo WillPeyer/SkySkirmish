@@ -46,12 +46,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: -200, y: 0))
+        path.move(to: CGPoint(x: -500, y: 200))
         path.addCurve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: -200, y: 0))
         path.addCurve(to: CGPoint(x: 140, y: 0), controlPoint1: CGPoint(x: 60, y: 180), controlPoint2: CGPoint(x: 140, y: 10))
         path.addCurve(to: CGPoint(x: 280, y: 0), controlPoint1: CGPoint(x: 220, y: -180), controlPoint2: CGPoint(x: 280, y: 0))
         path.addCurve(to: CGPoint(x: 440, y: 0), controlPoint1: CGPoint(x: 400, y: -300), controlPoint2: CGPoint(x: 440, y: 0))
-        let move = SKAction.follow(path.cgPath, speed: 100)
+        let move = SKAction.follow(path.cgPath, speed: 200)
         
         //initializing player
         player = SKSpriteNode(imageNamed: "small_dot")
