@@ -50,7 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let screenHeight = UIScreen.main.nativeBounds.height
         print("The width is \(screenWidth) and the height is \(screenHeight)")
         print(-screenWidth/2 - 10)
-        
+        //penile
         let path1 = UIBezierPath()
         path1.move(to: CGPoint(x: -screenWidth/2 - 10, y: (screenHeight/10 - 100)))
         //path1.addLine(to: CGPoint(x: (screenWidth / 2), y: (screenHeight/2 - 100)))
