@@ -45,13 +45,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: -500, y: 200))
-        path.addCurve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: -200, y: 0))
-        path.addCurve(to: CGPoint(x: 140, y: 0), controlPoint1: CGPoint(x: 60, y: 180), controlPoint2: CGPoint(x: 140, y: 10))
-        path.addCurve(to: CGPoint(x: 280, y: 0), controlPoint1: CGPoint(x: 220, y: -180), controlPoint2: CGPoint(x: 280, y: 0))
-        path.addCurve(to: CGPoint(x: 440, y: 0), controlPoint1: CGPoint(x: 400, y: -300), controlPoint2: CGPoint(x: 440, y: 0))
-        let move = SKAction.follow(path.cgPath, speed: 200)
+        print(UIScreen.main.nativeBounds)
+        let screenWidth = UIScreen.main.nativeBounds.width
+        let screenHeight = UIScreen.main.nativeBounds.height
+        print("The width is \(screenWidth) and the height is \(screenHeight)")
+        print(-screenWidth/2 - 10)
+        
+        let path1 = UIBezierPath()
+        path1.move(to: CGPoint(x: -screenWidth/2 - 10, y: (screenHeight/10 - 100)))
+        //path1.addLine(to: CGPoint(x: (screenWidth / 2), y: (screenHeight/2 - 100)))
+        path1.addCurve(to: CGPoint(x: -screenWidth/4, y: -screenHeight/2 - 50), controlPoint1: CGPoint(x: -screenWidth/4, y: screenHeight/20), controlPoint2: CGPoint(x: -screenWidth/4, y: screenHeight/20))
+                      
+                      //, controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: 0))
+        
+        let move = SKAction.follow(path1.cgPath, speed: 200)
         
         //initializing player
         player = SKSpriteNode(imageNamed: "small_dot")
