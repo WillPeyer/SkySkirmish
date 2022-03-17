@@ -45,11 +45,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: -500, y: 200))
+        path.addCurve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: -200, y: 0))
+        path.addCurve(to: CGPoint(x: 140, y: 0), controlPoint1: CGPoint(x: 60, y: 180), controlPoint2: CGPoint(x: 140, y: 10))
+        path.addCurve(to: CGPoint(x: 280, y: 0), controlPoint1: CGPoint(x: 220, y: -180), controlPoint2: CGPoint(x: 280, y: 0))
+        path.addCurve(to: CGPoint(x: 440, y: 0), controlPoint1: CGPoint(x: 400, y: -300), controlPoint2: CGPoint(x: 440, y: 0))
+        let move = SKAction.follow(path.cgPath, speed: 200)
+        
         //initializing player
         player = SKSpriteNode(imageNamed: "small_dot")
         player.name = "Player"
         player.position = CGPoint(x: 0, y: -400)
         player.zPosition = 2
+        player.setScale(0.8)
         player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.texture!.size())
         player.physicsBody?.affectedByGravity = false
         player.physicsBody?.categoryBitMask = CollisionType.player.rawValue
@@ -76,10 +85,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemies.append(testEnemy)
         self.addChild(testEnemy.enemyNode)
         
+        testBox.run(move)
+        
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
         upgrade.name = "upgrade"
         upgrade.position = CGPoint(x: 200, y: 400)
-        upgrade.setScale(1)
+        upgrade.setScale(0.8)
         upgrade.zPosition = 1
         upgrade.physicsBody = SKPhysicsBody(texture: upgrade.texture!, size: upgrade.texture!.size())
         upgrade.physicsBody?.isDynamic = false
@@ -174,7 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if isPlayerAlive && !gamePaused {
             let mainPlayerBullet = SKSpriteNode(imageNamed: "sampleBullet")
             mainPlayerBullet.name = "Main Bullet"
-            mainPlayerBullet.setScale(0.4)
+            mainPlayerBullet.setScale(0.3)
             mainPlayerBullet.position = player.position
             mainPlayerBullet.zPosition = 1
             mainPlayerBullet.physicsBody = SKPhysicsBody(rectangleOf: mainPlayerBullet.size)
@@ -196,7 +207,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //left wing
             let wingBullet1 = SKSpriteNode(imageNamed: "sampleBullet")
             wingBullet1.name = "Left Wing Bullet"
-            wingBullet1.setScale(0.3)
+            wingBullet1.setScale(0.2)
             wingBullet1.position = CGPoint(x: player.position.x - 40, y: player.position.y)
             wingBullet1.zPosition = 1
             wingBullet1.physicsBody = SKPhysicsBody(rectangleOf: wingBullet1.size)
@@ -209,7 +220,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //right wing
             let wingBullet2 = SKSpriteNode(imageNamed: "sampleBullet")
             wingBullet2.name = "Right Wing Bullet"
-            wingBullet2.setScale(0.3)
+            wingBullet2.setScale(0.2)
             wingBullet2.position = CGPoint(x: player.position.x + 40, y: player.position.y)
             wingBullet2.zPosition = 1
             wingBullet2.physicsBody = SKPhysicsBody(rectangleOf: wingBullet2.size)
