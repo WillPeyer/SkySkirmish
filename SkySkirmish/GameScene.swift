@@ -51,14 +51,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("The width is \(screenWidth) and the height is \(screenHeight)")
         print(-screenWidth/2 - 10)
         //penile
+        
         let path1 = UIBezierPath()
         path1.move(to: CGPoint(x: -screenWidth/2 - 10, y: (screenHeight/10 - 100)))
         //path1.addLine(to: CGPoint(x: (screenWidth / 2), y: (screenHeight/2 - 100)))
         path1.addCurve(to: CGPoint(x: -screenWidth/4, y: -screenHeight/2 - 50), controlPoint1: CGPoint(x: -screenWidth/4, y: screenHeight/20), controlPoint2: CGPoint(x: -screenWidth/4, y: screenHeight/20))
                       
                       //, controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: 0))
+        let path2 = UIBezierPath()
+        path2.move(to: CGPoint(x: screenWidth/2 + 10, y: (screenHeight/10 - 100)))
+        path2.addCurve(to: CGPoint(x: 0, y: -screenHeight/2 - 50), controlPoint1: CGPoint(x: 0, y: screenHeight/20), controlPoint2: CGPoint(x: 0, y: screenHeight/20))
         
-        let move = SKAction.follow(path1.cgPath, speed: 200)
+        let move = SKAction.follow(path1.cgPath, speed: 300)
+        let move2 = SKAction.follow(path2.cgPath, speed: 300)
         
         //initializing player
         player = SKSpriteNode(imageNamed: "small_dot")
@@ -92,7 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemies.append(testEnemy)
         self.addChild(testEnemy.enemyNode)
         
-        testBox.run(move)
+        testBox.run(move2)
         
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
         upgrade.name = "upgrade"
