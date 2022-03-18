@@ -111,9 +111,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     //explosion
                 }
                 
-                //body1.node?.removeFromParent()
-                //body2.node?.removeFromParent()
-                //runGameOver()
+                body1.node?.removeFromParent()
+                isPlayerAlive = false
+                runGameOver()
             }
             
             if body1.categoryBitMask == CollisionType.bullet.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
@@ -134,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     body2.node?.removeFromParent()
                     enemies.remove(at: index)
                 }
-                //body2.node?.removeFromParent()
+                
                 //runGameOver()
             }
 
@@ -148,6 +148,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
+    func runGameOver(){
+        let changeSceneAction = SKAction.run(changeScene)
+        let waitAction = SKAction.wait(forDuration: 1)
+        let changeSequence = SKAction.sequence([waitAction, changeSceneAction])
+        self.run(changeSequence)
+        changeScene()
+    }
+    
+    func changeScene(){
+        let sceneToMoveTo = MainMenuScene(size: self.size)
+        sceneToMoveTo.scaleMode = self.scaleMode
+        let transition1 = SKTransition.fade(withDuration: 0.6)
+        self.view!.presentScene(sceneToMoveTo, transition: transition1)
+           
+       }
     
     func findEnemy(body: SKPhysicsBody) -> Int {
         var isFound = false
