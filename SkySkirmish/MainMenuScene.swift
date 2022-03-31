@@ -23,6 +23,7 @@ class MainMenuScene: SKScene{
         title1.fontColor = SKColor.white
         title1.text = "Sky Skirmish"
         title1.zPosition = 1
+        title1.setScale(0.5)
         title1.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.65)
         self.addChild(title1)
         
@@ -32,6 +33,7 @@ class MainMenuScene: SKScene{
         startGame.text = "Start Game"
         startGame.zPosition = 1
         startGame.name = "Start Button"
+        startGame.setScale(0.5)
         startGame.position = CGPoint(x: self.size.width/2, y: self.size.height * 0.4)
         self.addChild(startGame)
         
@@ -43,7 +45,7 @@ class MainMenuScene: SKScene{
             if nodeITapped.name == "Start Button"{
                 let scene = GKScene(fileNamed: "GameScene")
                 let sceneToMoveTo = scene!.rootNode as! GameScene
-                sceneToMoveTo.scaleMode = .aspectFill
+                sceneToMoveTo.scaleMode = .fill
                 sceneToMoveTo.entities = scene!.entities
                 sceneToMoveTo.graphs = scene!.graphs
                 //let myTransition = SKTransition.fade(withDuration: 0.5)

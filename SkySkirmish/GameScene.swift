@@ -186,7 +186,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             testEnemy.HP = 200
             testBox = SKSpriteNode(imageNamed: "blueRectangle")
             testBox.name = enemyName
-            testBox.position = CGPoint(x: 100, y: 300)
             testBox.setScale(0.2)
             testBox.zPosition = 2
             testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
@@ -202,28 +201,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             enemyIdentifier += 1
             
-            let screenWidth = UIScreen.main.bounds.width/2
-            let screenHeight = UIScreen.main.bounds.height/2
+            let screenWidth = UIScreen.main.bounds.width
+            let screenHeight = UIScreen.main.bounds.height
+            
+            let testpath = UIBezierPath()
+            testpath.move(to: CGPoint(x: 0, y: 0))
+            testpath.addLine(to: CGPoint(x: 0, y: -1000))
 
             let path = UIBezierPath()
-            path.move(to: CGPoint(x: -screenWidth * 2, y: -screenHeight * 2))
-            path.addLine(to: CGPoint(x: screenWidth * 2, y: screenHeight * 2))
+            path.move(to: CGPoint(x: -screenWidth / 2, y: screenHeight + 100))
+            //path.addCurve(to: CGPoint(x: screenWidth / 2, y: screenHeight + 100), controlPoint1: CGPoint(x: -screenWidth / 2, y: -500), controlPoint2: CGPoint(x: screenWidth / 2, y: -500))
+            path.addCurve(to: CGPoint(x: 0, y: -screenHeight / 2), controlPoint1: CGPoint(x: -screenWidth / 2, y: -screenHeight / 2), controlPoint2: CGPoint(x: -screenWidth / 2, y: -screenHeight / 2))
+            path.addCurve(to: CGPoint(x: screenWidth / 2, y: screenHeight + 100), controlPoint1: CGPoint(x: screenWidth / 2, y: -screenHeight / 2), controlPoint2: CGPoint(x: screenWidth / 2, y: -screenHeight / 2))
             
             let path1 = UIBezierPath()
-            path1.move(to: CGPoint(x: -screenWidth, y: screenHeight/2))
+            path1.move(to: CGPoint(x: -screenWidth * 2, y: screenHeight/2))
             path1.addCurve(to: CGPoint(x: -screenWidth/2, y: -screenHeight * 3), controlPoint1: CGPoint(x: -screenWidth/3, y: screenHeight/2), controlPoint2: CGPoint(x: -screenWidth/3, y: screenHeight/2))
             
             let path2 = UIBezierPath()
-            path2.move(to: CGPoint(x: screenWidth, y: screenHeight/2))
+            path2.move(to: CGPoint(x: screenWidth * 2, y: screenHeight/2))
             path2.addCurve(to: CGPoint(x: screenWidth/2, y: -screenHeight * 3), controlPoint1: CGPoint(x: screenWidth/3, y: screenHeight/2), controlPoint2: CGPoint(x: screenWidth/3, y: screenHeight/2))
             
-            let move =  SKAction.follow(path.cgPath, speed: 300)
-            let move1 = SKAction.follow(path1.cgPath, speed: 300)
-            let move2 = SKAction.follow(path2.cgPath, speed: 300)
+            let move =  SKAction.follow(path.cgPath, speed: 400)
+            let move1 = SKAction.follow(path1.cgPath, speed: 400)
+            let move2 = SKAction.follow(path2.cgPath, speed: 400)
+            let testmove = SKAction.follow(testpath.cgPath, speed: 300)
             
             let moves: [SKAction] = [move, move1, move2]
             
             let deleteObj = SKAction.removeFromParent()
+
             let sequence = SKAction.sequence([moves[randomPath], deleteObj])
             testBox.run(sequence)
         }
@@ -319,7 +326,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func enemyTimer(){
-        EnemyTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.enemy), userInfo: nil, repeats: true)
+        EnemyTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(self.enemy), userInfo: nil, repeats: true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
