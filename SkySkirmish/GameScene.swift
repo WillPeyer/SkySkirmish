@@ -159,7 +159,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func changeScene(){
         let sceneToMoveTo = MainMenuScene(size: self.size)
-        sceneToMoveTo.scaleMode = self.scaleMode
+        sceneToMoveTo.scaleMode = .resizeFill
         let transition1 = SKTransition.fade(withDuration: 0.6)
         self.view!.presentScene(sceneToMoveTo, transition: transition1)
            
@@ -221,6 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let path2 = UIBezierPath()
             path2.move(to: CGPoint(x: screenWidth * 2, y: screenHeight/2))
             path2.addCurve(to: CGPoint(x: screenWidth/2, y: -screenHeight * 3), controlPoint1: CGPoint(x: screenWidth/3, y: screenHeight/2), controlPoint2: CGPoint(x: screenWidth/3, y: screenHeight/2))
+            
             
             let move =  SKAction.follow(path.cgPath, speed: 400)
             let move1 = SKAction.follow(path1.cgPath, speed: 400)
