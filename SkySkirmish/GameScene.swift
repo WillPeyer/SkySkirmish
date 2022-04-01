@@ -141,7 +141,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.item.rawValue {
                 body2.node?.removeFromParent()
                 if(mainWeaponLevel < mainWeaponIntervals.count){
-                    mainWeaponLevel += 8
+                    mainWeaponLevel += 4
                 }
                 MainWeaponTimer?.invalidate()
                 MainWeaponTimer = Timer.scheduledTimer(timeInterval: mainWeaponIntervals[mainWeaponLevel], target: self, selector: #selector(self.mainWeapon), userInfo: nil, repeats: true)
@@ -205,9 +205,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let screenHeight = UIScreen.main.bounds.height
             
             let testpath = UIBezierPath()
-            //testpath.move(to: CGPoint(x: -300, y: screenHeight + 100))
-            testpath.addArc(withCenter: CGPoint(x: 0, y: 0), radius: 300, startAngle: 0, endAngle: 360, clockwise: true)
-//            testpath.addLine(to: CGPoint(x: screenWidth + 100, y: -150))
+            testpath.move(to: CGPoint(x: screenWidth / 2, y: screenHeight + 100))
+            testpath.addArc(withCenter: CGPoint(x: 0, y: 0), radius: screenWidth / 2, startAngle: 0, endAngle: (2 * .pi) + 0.00000000000001, clockwise: false)
+            testpath.addLine(to: CGPoint(x: screenWidth / 2, y: -screenHeight - 100))
 
             let path = UIBezierPath()
             path.move(to: CGPoint(x: -screenWidth / 2, y: screenHeight + 100))
@@ -223,17 +223,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             path2.move(to: CGPoint(x: screenWidth * 2, y: screenHeight/2))
             path2.addCurve(to: CGPoint(x: screenWidth/2, y: -screenHeight * 3), controlPoint1: CGPoint(x: screenWidth/3, y: screenHeight/2), controlPoint2: CGPoint(x: screenWidth/3, y: screenHeight/2))
             
+            let path3 = UIBezierPath()
+            path3.move(to: CGPoint(x: -screenWidth / 2, y: screenHeight + 100))
+            path3.addArc(withCenter: CGPoint(x: 0, y: 0), radius: screenWidth / 2, startAngle: .pi, endAngle: (3 * .pi), clockwise: true)
+            path3.addLine(to: CGPoint(x: -screenWidth / 2, y: -screenHeight - 100))
+            
+            let path4 = UIBezierPath()
+            path4.move(to: CGPoint(x: screenWidth / 2, y: screenHeight + 100))
+            path4.addArc(withCenter: CGPoint(x: 0, y: 0), radius: screenWidth / 2, startAngle: 0, endAngle: (2 * .pi) + 0.00000000000001, clockwise: false)
+            path4.addLine(to: CGPoint(x: screenWidth / 2, y: -screenHeight - 100))
+            
             
             let move =  SKAction.follow(path.cgPath, speed: 400)
             let move1 = SKAction.follow(path1.cgPath, speed: 400)
             let move2 = SKAction.follow(path2.cgPath, speed: 400)
+            let move3 = SKAction.follow(path3.cgPath, speed: 400)
+            let move4 = SKAction.follow(path4.cgPath, speed: 400)
             let testmove = SKAction.follow(testpath.cgPath, speed: 300)
             
-            let moves: [SKAction] = [move, move1, move2]
+            let moves: [SKAction] = [move, move1, move2, move3, move4]
             
             let deleteObj = SKAction.removeFromParent()
             //moves[randomPath]
-            let sequence = SKAction.sequence([testmove, deleteObj])
+            let sequence = SKAction.sequence([moves[randomPath], deleteObj])
             testBox.run(sequence)
         }
     }
@@ -310,7 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func getRandom() {
         RandomTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { Timer in
-            self.randomPath = Int.random(in: 0..<3) })
+            self.randomPath = Int.random(in: 0..<5) })
     }
     
     //timers for the player's weapons
