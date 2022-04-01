@@ -205,8 +205,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let screenHeight = UIScreen.main.bounds.height
             
             let testpath = UIBezierPath()
-            testpath.move(to: CGPoint(x: 0, y: 0))
-            testpath.addLine(to: CGPoint(x: 0, y: -1000))
+            //testpath.move(to: CGPoint(x: -300, y: screenHeight + 100))
+            testpath.addArc(withCenter: CGPoint(x: 0, y: 0), radius: 300, startAngle: 0, endAngle: 360, clockwise: true)
+//            testpath.addLine(to: CGPoint(x: screenWidth + 100, y: -150))
 
             let path = UIBezierPath()
             path.move(to: CGPoint(x: -screenWidth / 2, y: screenHeight + 100))
@@ -231,8 +232,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let moves: [SKAction] = [move, move1, move2]
             
             let deleteObj = SKAction.removeFromParent()
-
-            let sequence = SKAction.sequence([moves[randomPath], deleteObj])
+            //moves[randomPath]
+            let sequence = SKAction.sequence([testmove, deleteObj])
             testBox.run(sequence)
         }
     }
