@@ -207,8 +207,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             enemies.append(tempHeli)
             self.addChild(helicopter)
             
-            
             let movement = SKAction.follow(helicopterPath.cgPath, speed: 100)
+            movement.timingMode = SKActionTimingMode.easeOut
             let deleteObj = SKAction.removeFromParent()
             let sequence = SKAction.sequence([movement, deleteObj])
             helicopter.run(sequence)
