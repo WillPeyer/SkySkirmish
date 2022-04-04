@@ -85,7 +85,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cooldownTimer()
         enemyTimer()
         getRandom()
-        heliTimer()
+        //heliTimer()
+        helicopter()
         
         backgroundColor = SKColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
@@ -188,18 +189,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let screenHeight = UIScreen.main.bounds.height
             
             let helicopterPath = UIBezierPath()
-            helicopterPath.move(to: CGPoint(x: -screenWidth + 100, y: screenHeight))
-            helicopterPath.addLine(to: CGPoint(x: -screenWidth + 100, y: 0))
+            helicopterPath.move(to: CGPoint(x: 0, y: screenHeight + 10))
+            helicopterPath.addLine(to: CGPoint(x: 0, y: screenHeight - 200))
+            
+            let heliPath2 = UIBezierPath()
+            heliPath2.addArc(withCenter: CGPoint(x: 20, y: screenHeight - 200), radius: 20, startAngle: .pi, endAngle: 3 * .pi + 0.00000000000001, clockwise: true)
+            heliPath2.addArc(withCenter: CGPoint(x: -20, y: screenHeight - 200), radius: 20, startAngle: 0, endAngle: 2 * .pi + 0.00000000000001, clockwise: false)
+            
+            let heliPath3 = UIBezierPath()
+            heliPath3.move(to: CGPoint(x: 0, y: screenHeight - 200))
+            heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 200))
             
             var tempHeli: Enemy = Enemy()
             tempHeli.enemyNode = SKSpriteNode(imageNamed: "tf")
             let helicopter = tempHeli.enemyNode
-            tempHeli.HP = 100
+            tempHeli.HP = 2000
             helicopter.name = "helicopter"
             helicopter.setScale(0.3)
             helicopter.zPosition = 3
             helicopter.physicsBody = SKPhysicsBody(rectangleOf: helicopter.size)
             helicopter.physicsBody!.affectedByGravity = false
+            helicopter.physicsBody!.allowsRotation = false
             helicopter.physicsBody!.categoryBitMask = CollisionType.enemy.rawValue
             helicopter.physicsBody!.collisionBitMask = CollisionType.player.rawValue
             helicopter.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
@@ -207,10 +217,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             enemies.append(tempHeli)
             self.addChild(helicopter)
             
-            let movement = SKAction.follow(helicopterPath.cgPath, speed: 100)
-            movement.timingMode = SKActionTimingMode.easeOut
+            let movement = SKAction.follow(helicopterPath.cgPath, asOffset: false, orientToPath: false, speed: 75)
+            let movement2 = SKAction.follow(heliPath2.cgPath, asOffset: false, orientToPath: false, speed: 75)
+            let movement3 = SKAction.repeat(movement2, count: 3)
+            let movement4 = SKAction.follow(heliPath3.cgPath, asOffset: false, orientToPath: false, speed: 75)
+            let movementWait = SKAction.wait(forDuration: 0.5)
+            //movement.timingMode = SKActionTimingMode.easeOut
             let deleteObj = SKAction.removeFromParent()
-            let sequence = SKAction.sequence([movement, deleteObj])
+            let sequence = SKAction.sequence([movement, movement3, movementWait, movement.reversed(), deleteObj])
             helicopter.run(sequence)
         }
     }
@@ -367,7 +381,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func heliTimer() {
-        HeliTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.helicopter), userInfo: nil, repeats: true)
+        HeliTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.helicopter), userInfo: nil, repeats: true)
     }
     
     func timerWingCannons() {
