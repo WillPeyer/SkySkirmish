@@ -6,4 +6,4 @@ You play as a space jet flying through outer space shooting everything in your w
 
 ## Developers
 
-Sky Skirmish was developed by Will Peyer, and Noah Rubin. 
+Sky Skirmish was developed by Will Peyer, and Noah Rubin. (@mflzo)
