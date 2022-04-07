@@ -51,11 +51,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         //initializing player
-        player = SKSpriteNode(imageNamed: "small_dot")
+        player = SKSpriteNode(imageNamed: "PlayerShip")
         player.name = "Player"
         player.position = CGPoint(x: 0, y: -400)
         player.zPosition = 2
-        player.setScale(0.8)
+        player.setScale(1)
         player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.texture!.size())
         player.physicsBody?.affectedByGravity = false
         player.physicsBody?.categoryBitMask = CollisionType.player.rawValue
