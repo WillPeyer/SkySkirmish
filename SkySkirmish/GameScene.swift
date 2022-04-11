@@ -220,7 +220,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             helicopter.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
             tempHeli.enemyNode = helicopter
             enemies.append(tempHeli)
-            HelicopterOnScreen = tempHeli.enemyNode
+            HelicopterOnScreen = helicopter
             self.addChild(helicopter)
             
             let movement = SKAction.follow(helicopterPath.cgPath, asOffset: false, orientToPath: false, speed: 75)
@@ -250,15 +250,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let slopeY = (HelicopterOnScreen.position.y - player.position.y)
             let slopeX = (HelicopterOnScreen.position.x - player.position.x)
             let slope = slopeY / slopeX
-            print(slopeX)
-            print(slopeY)
+            
+            //(y - player.position.y) = slope(x - player.position.x)
+            //(y - py)/slope + px = x
+            
+            let xGoal = ((-UIScreen.main.bounds.height - player.position.y) / (slope)) + player.position.x
             let heliBulletPath = UIBezierPath()
             heliBulletPath.move(to: HelicopterOnScreen.position)
-            heliBulletPath.addLine(to: CGPoint(x: player.position.x, y: player.position.y))
+            heliBulletPath.addLine(to: CGPoint(x: xGoal, y: -UIScreen.main.bounds.height))
             
             let movement = SKAction.follow(heliBulletPath.cgPath, speed: 400)
             let deleteObj = SKAction.removeFromParent()
-            
             let sequence = SKAction.sequence([movement, deleteObj])
             heliBullet.run(sequence)
 
@@ -422,7 +424,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func timerHeliWeapon() {
-        HeliWeaponTimer =  Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(self.enemyBullet), userInfo: nil, repeats: true)
+        HeliWeaponTimer =  Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.enemyBullet), userInfo: nil, repeats: true)
     }
     
     func timerWingCannons() {
