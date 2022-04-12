@@ -423,8 +423,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             mainPlayerBullet.physicsBody!.collisionBitMask = CollisionType.enemy.rawValue
             mainPlayerBullet.physicsBody!.contactTestBitMask = CollisionType.enemy.rawValue
             self.addChild(mainPlayerBullet)
-            
-            let movement = SKAction.moveTo(y: player.position.y + 1500, duration: 1)
+     
+            let y = UIScreen.main.bounds.height - player.position.y
+            let time = (y / 1000)
+            let movement = SKAction.moveTo(y: UIScreen.main.bounds.height, duration: time)
             let deleteObj = SKAction.removeFromParent()
             let sequence = SKAction.sequence([movement, deleteObj])
             mainPlayerBullet.run(sequence)
