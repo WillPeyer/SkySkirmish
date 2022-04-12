@@ -111,6 +111,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 body2 = contact.bodyA
             }
             
+            if body2.categoryBitMask == CollisionType.enemyBullet.rawValue && body1.categoryBitMask == CollisionType.player.rawValue {
+                isHeliAlive = false
+                body2.node?.removeFromParent()
+                body1.node?.removeFromParent()
+                isPlayerAlive = false
+                runGameOver()
+            }
+            
             if body1.categoryBitMask == CollisionType.player.rawValue && body2.categoryBitMask == CollisionType.enemy.rawValue {
                 if body1.node != nil {
                     //explosion
