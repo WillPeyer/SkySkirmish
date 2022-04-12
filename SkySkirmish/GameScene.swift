@@ -49,6 +49,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var testBox = SKSpriteNode()
     private var upgrade = SKSpriteNode()
     private var heliBullet = SKSpriteNode()
+    private var heliBulletAdd = SKSpriteNode()
+    private var heliBulletSub = SKSpriteNode()
     
     override func didMove(to view: SKView) {
         
@@ -259,6 +261,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliBullet.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
             self.addChild(heliBullet)
             
+            heliBulletAdd = SKSpriteNode(imageNamed: "sampleBullet")
+            heliBulletAdd.setScale(0.3)
+            heliBulletAdd.zPosition = 1
+            heliBulletAdd.physicsBody = SKPhysicsBody(rectangleOf: heliBulletAdd.size)
+            heliBulletAdd.physicsBody!.affectedByGravity = false
+            heliBulletAdd.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
+            heliBulletAdd.physicsBody!.collisionBitMask = CollisionType.player.rawValue
+            heliBulletAdd.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
+            self.addChild(heliBulletAdd)
+            
+            heliBulletSub = SKSpriteNode(imageNamed: "sampleBullet")
+            heliBulletSub.setScale(0.3)
+            heliBulletSub.zPosition = 1
+            heliBulletSub.physicsBody = SKPhysicsBody(rectangleOf: heliBulletSub.size)
+            heliBulletSub.physicsBody!.affectedByGravity = false
+            heliBulletSub.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
+            heliBulletSub.physicsBody!.collisionBitMask = CollisionType.player.rawValue
+            heliBulletSub.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
+            self.addChild(heliBulletSub)
+
             let slopeY = (HelicopterOnScreen.position.y - player.position.y)
             let slopeX = (HelicopterOnScreen.position.x - player.position.x)
             let slope = slopeY / slopeX
@@ -266,15 +288,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //(y - player.position.y) = slope(x - player.position.x)
             //(y - py)/slope + px = x
             
+            let theta = atan(HelicopterOnScreen.position.y / HelicopterOnScreen.position.x)
+            let degreesToRadians = theta * (180 / .pi)
+            let r = sqrt(pow(HelicopterOnScreen.position.x, 2) + pow(HelicopterOnScreen.position.y, 2))
+            let tempAdd = (degreesToRadians + 5) * (.pi / 180)
+            let tempSub = (degreesToRadians - 5) * (.pi / 180)
+            let newXAdd = r * cos(tempAdd)
+            let newYAdd = r * sin(tempAdd)
+            let newXSub = r * cos(tempSub)
+            let newYSub = r * sin(tempSub)
+            
             let xGoal = ((-UIScreen.main.bounds.height - player.position.y) / (slope)) + player.position.x
+            let addXGoal = ((-UIScreen.main.bounds.height - newYAdd) / (slope)) + newXAdd
+            let subXGoal = ((-UIScreen.main.bounds.height - newYSub) / (slope)) + newXSub
+            
             let heliBulletPath = UIBezierPath()
+            let heliBulletPathAdd = UIBezierPath()
+            let heliBulletPathSub = UIBezierPath()
+            
             heliBulletPath.move(to: HelicopterOnScreen.position)
             heliBulletPath.addLine(to: CGPoint(x: xGoal, y: -UIScreen.main.bounds.height))
             
+            heliBulletPathAdd.move(to: HelicopterOnScreen.position)
+            heliBulletPathAdd.addLine(to: CGPoint(x: addXGoal, y: -UIScreen.main.bounds.height))
+            
+            heliBulletPathSub.move(to: HelicopterOnScreen.position)
+            heliBulletPathSub.addLine(to: CGPoint(x: subXGoal, y: -UIScreen.main.bounds.height))
+            
             let movement = SKAction.follow(heliBulletPath.cgPath, speed: 400)
+            let movementAdd = SKAction.follow(heliBulletPathAdd.cgPath, speed: 400)
+            let movementSub = SKAction.follow(heliBulletPathSub.cgPath, speed: 400)
+            
             let deleteObj = SKAction.removeFromParent()
             let sequence = SKAction.sequence([movement, deleteObj])
+            let sequenceAdd = SKAction.sequence([movementAdd, deleteObj])
+            let sequenceSub = SKAction.sequence([movementSub, deleteObj])
+            
             heliBullet.run(sequence)
+            heliBulletAdd.run(sequenceAdd)
+            heliBulletSub.run(sequenceSub)
 
         }
     }
