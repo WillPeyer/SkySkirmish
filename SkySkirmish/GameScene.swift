@@ -33,6 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var cooldown = false
     var randomPath = 0
     var enemyIdentifier = 0
+    var isHeliAlive: Bool = false
     
     enum CollisionType: UInt32 {
         case none = 0
@@ -204,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let heliPath3 = UIBezierPath()
             heliPath3.move(to: CGPoint(x: 0, y: screenHeight - 200))
             heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 200))
-            
+            isHeliAlive = true
             var tempHeli: Enemy = Enemy()
             tempHeli.enemyNode = SKSpriteNode(imageNamed: "tf")
             let helicopter = tempHeli.enemyNode
@@ -230,7 +231,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let movementWait = SKAction.wait(forDuration: 0.5)
             //movement.timingMode = SKActionTimingMode.easeOut
             let deleteObj = SKAction.removeFromParent()
-            let sequence = SKAction.sequence([movement, movement3, movementWait, movement.reversed(), deleteObj])
+            let heliDead = SKAction.run({
+                self.isHeliAlive = false
+            })
+            let sequence = SKAction.sequence([movement, movement3, movementWait, movement.reversed(), heliDead, deleteObj])
             helicopter.run(sequence)
         }
     }
@@ -424,7 +428,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func timerHeliWeapon() {
-        HeliWeaponTimer =  Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.enemyBullet), userInfo: nil, repeats: true)
+        HeliWeaponTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { Timer in
+            if (self.isHeliAlive){
+                self.enemyBullet()
+            }
+        })
     }
     
     func timerWingCannons() {
