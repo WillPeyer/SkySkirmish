@@ -425,6 +425,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.addChild(mainPlayerBullet)
      
             let y = UIScreen.main.bounds.height - player.position.y
+            // time = distance / speed
             let time = (y / 1000)
             let movement = SKAction.moveTo(y: UIScreen.main.bounds.height, duration: time)
             let deleteObj = SKAction.removeFromParent()
