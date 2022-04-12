@@ -73,20 +73,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //test boxes for collsion testing
         //testBox.run(move2)
         
-        upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
-        upgrade.name = "upgrade"
-        upgrade.position = CGPoint(x: 200, y: 400)
-        upgrade.setScale(0.8)
-        upgrade.zPosition = 1
-        upgrade.physicsBody = SKPhysicsBody(texture: upgrade.texture!, size: upgrade.texture!.size())
-        upgrade.physicsBody?.isDynamic = false
-        upgrade.physicsBody?.isResting = true
-        upgrade.physicsBody!.affectedByGravity = false
-        upgrade.physicsBody?.categoryBitMask = CollisionType.item.rawValue
-        upgrade.physicsBody?.collisionBitMask = CollisionType.player.rawValue
-        upgrade.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
-        self.addChild(upgrade)
-        
         timerMainWeapon(Level: mainWeaponLevel)
         timerHeliWeapon()
         //timerWingCannons()
@@ -150,6 +136,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 body1.node?.removeFromParent()
                 
                 if(tempEnemy.HP <= 0){
+                    if body2.node?.name == "helicopter" {
+                        isHeliAlive = false
+                        upgradeObject()
+                    }
+                    
                     body2.node?.removeFromParent()
                     enemies.remove(at: index)
                 }
@@ -196,6 +187,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             count+=1
         }
         return 0
+    }
+    
+    @objc func upgradeObject() {
+        upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
+        upgrade.name = "upgrade"
+        upgrade.position = CGPoint(x: 0, y: 0)
+        upgrade.setScale(0.8)
+        upgrade.zPosition = 1
+        upgrade.physicsBody = SKPhysicsBody(texture: upgrade.texture!, size: upgrade.texture!.size())
+        upgrade.physicsBody?.isDynamic = false
+        upgrade.physicsBody?.isResting = true
+        upgrade.physicsBody!.affectedByGravity = false
+        upgrade.physicsBody?.categoryBitMask = CollisionType.item.rawValue
+        upgrade.physicsBody?.collisionBitMask = CollisionType.player.rawValue
+        upgrade.physicsBody?.contactTestBitMask = CollisionType.player.rawValue
+        self.addChild(upgrade)
     }
     
     @objc func helicopter() {
