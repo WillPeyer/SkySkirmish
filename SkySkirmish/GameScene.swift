@@ -34,6 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var randomPath = 0
     var enemyIdentifier = 0
     var isHeliAlive: Bool = false
+    var score: Int = 0
     
     enum CollisionType: UInt32 {
         case none = 0
@@ -51,11 +52,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var heliBullet = SKSpriteNode()
     private var heliBulletAdd = SKSpriteNode()
     private var heliBulletSub = SKSpriteNode()
+    private var scoreboard = SKLabelNode()
     
     override func didMove(to view: SKView) {
         
         physicsWorld.contactDelegate = self
         
+        scoreboard.position = CGPoint(x: -UIScreen.main.bounds.width + 100, y: UIScreen.main.bounds.height - 100)
+        scoreboard.text = String(score)
+        scoreboard.fontSize = 75
+        scoreboard.fontColor = SKColor.white
+        scoreboard.setScale(0.5)
+        scoreboard.zPosition = 5
+        self.addChild(scoreboard)
         
         //initializing player
         player = SKSpriteNode(imageNamed: "PlayerShip")
@@ -140,7 +149,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         isHeliAlive = false
                         upgradeObject()
                     }
-                    
+                    score += tempEnemy.baseHP
+                    scoreboard.text = String(score)
                     body2.node?.removeFromParent()
                     enemies.remove(at: index)
                 }
@@ -226,7 +236,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var tempHeli: Enemy = Enemy()
             tempHeli.enemyNode = SKSpriteNode(imageNamed: "tf")
             let helicopter = tempHeli.enemyNode
-            tempHeli.HP = 2000
+            tempHeli.HP = 1000
+            tempHeli.baseHP = 1000
             helicopter.name = "helicopter"
             helicopter.setScale(0.3)
             helicopter.zPosition = 3
@@ -260,7 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if isPlayerAlive && !gamePaused {
             heliBullet = SKSpriteNode(imageNamed: "sampleBullet")
             heliBullet.setScale(0.3)
-            heliBullet.zPosition = 1
+            heliBullet.zPosition = 3
             heliBullet.physicsBody = SKPhysicsBody(rectangleOf: heliBullet.size)
             heliBullet.physicsBody!.affectedByGravity = false
             heliBullet.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
@@ -270,7 +281,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             heliBulletAdd = SKSpriteNode(imageNamed: "sampleBullet")
             heliBulletAdd.setScale(0.3)
-            heliBulletAdd.zPosition = 1
+            heliBulletAdd.zPosition = 3
             heliBulletAdd.physicsBody = SKPhysicsBody(rectangleOf: heliBulletAdd.size)
             heliBulletAdd.physicsBody!.affectedByGravity = false
             heliBulletAdd.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
@@ -280,7 +291,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             heliBulletSub = SKSpriteNode(imageNamed: "sampleBullet")
             heliBulletSub.setScale(0.3)
-            heliBulletSub.zPosition = 1
+            heliBulletSub.zPosition = 3
             heliBulletSub.physicsBody = SKPhysicsBody(rectangleOf: heliBulletSub.size)
             heliBulletSub.physicsBody!.affectedByGravity = false
             heliBulletSub.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
@@ -298,8 +309,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let theta = atan(HelicopterOnScreen.position.y / HelicopterOnScreen.position.x)
             let degreesToRadians = theta * (180 / .pi)
             let r = sqrt(pow(HelicopterOnScreen.position.x, 2) + pow(HelicopterOnScreen.position.y, 2))
-            let tempAdd = (degreesToRadians + 5) * (.pi / 180)
-            let tempSub = (degreesToRadians - 5) * (.pi / 180)
+            let tempAdd = (degreesToRadians + 20) * (.pi / 180)
+            let tempSub = (degreesToRadians - 20) * (.pi / 180)
             let newXAdd = r * cos(tempAdd)
             let newYAdd = r * sin(tempAdd)
             let newXSub = r * cos(tempSub)
@@ -344,6 +355,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let enemyName = "enemy" + String(enemyIdentifier)
             var testEnemy: Enemy = Enemy()
             testEnemy.HP = 200
+            testEnemy.baseHP = 200
             testBox = SKSpriteNode(imageNamed: "blueRectangle")
             testBox.name = enemyName
             testBox.setScale(0.2)
@@ -498,7 +510,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func timerHeliWeapon() {
-        HeliWeaponTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { Timer in
+        HeliWeaponTimer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true, block: { Timer in
             if (self.isHeliAlive){
                 self.enemyBullet()
             }
@@ -534,7 +546,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 }
 
-struct Enemy{
+struct Enemy {
     var enemyNode: SKSpriteNode = SKSpriteNode(imageNamed: "blueRectangle")
     var HP: Int = 0
+    var baseHP: Int = 0
 }
