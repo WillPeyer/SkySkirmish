@@ -274,6 +274,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliBullet.zPosition = 3
             heliBullet.physicsBody = SKPhysicsBody(rectangleOf: heliBullet.size)
             heliBullet.physicsBody!.affectedByGravity = false
+            heliBullet.physicsBody?.isDynamic = false
             heliBullet.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
             heliBullet.physicsBody!.collisionBitMask = CollisionType.player.rawValue
             heliBullet.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
@@ -284,6 +285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliBulletAdd.zPosition = 3
             heliBulletAdd.physicsBody = SKPhysicsBody(rectangleOf: heliBulletAdd.size)
             heliBulletAdd.physicsBody!.affectedByGravity = false
+            heliBulletAdd.physicsBody?.isDynamic = false
             heliBulletAdd.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
             heliBulletAdd.physicsBody!.collisionBitMask = CollisionType.player.rawValue
             heliBulletAdd.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
@@ -294,6 +296,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliBulletSub.zPosition = 3
             heliBulletSub.physicsBody = SKPhysicsBody(rectangleOf: heliBulletSub.size)
             heliBulletSub.physicsBody!.affectedByGravity = false
+            heliBulletSub.physicsBody?.isDynamic = false
             heliBulletSub.physicsBody!.categoryBitMask = CollisionType.enemyBullet.rawValue
             heliBulletSub.physicsBody!.collisionBitMask = CollisionType.player.rawValue
             heliBulletSub.physicsBody!.contactTestBitMask = CollisionType.player.rawValue
@@ -305,18 +308,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             //(y - player.position.y) = slope(x - player.position.x)
             //(y - py)/slope + px = x
-            
+
             let theta = atan(HelicopterOnScreen.position.y / HelicopterOnScreen.position.x)
             let degreesToRadians = theta * (180 / .pi)
             let r = sqrt(pow(HelicopterOnScreen.position.x, 2) + pow(HelicopterOnScreen.position.y, 2))
             let tempAdd = (degreesToRadians + 20) * (.pi / 180)
             let tempSub = (degreesToRadians - 20) * (.pi / 180)
+            let newX = r * cos(theta)
+            let newY = r * sin(theta)
             let newXAdd = r * cos(tempAdd)
             let newYAdd = r * sin(tempAdd)
             let newXSub = r * cos(tempSub)
             let newYSub = r * sin(tempSub)
             
-            let xGoal = ((-UIScreen.main.bounds.height - player.position.y) / (slope)) + player.position.x
+            let xGoal = ((-UIScreen.main.bounds.height - newY) / (slope)) + newX
             let addXGoal = ((-UIScreen.main.bounds.height - newYAdd) / (slope)) + newXAdd
             let subXGoal = ((-UIScreen.main.bounds.height - newYSub) / (slope)) + newXSub
             
@@ -345,7 +350,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliBullet.run(sequence)
             heliBulletAdd.run(sequenceAdd)
             heliBulletSub.run(sequenceSub)
-
         }
     }
     
