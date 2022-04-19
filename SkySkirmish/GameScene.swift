@@ -26,6 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var RandomTimer: Timer?
     var HeliTimer: Timer?
     var HeliWeaponTimer: Timer?
+    var HeliSpriteTimer: Timer?
     
     var mainWeaponLevel = 0
     let mainWeaponIntervals = [0.425, 0.4, 0.375, 0.35, 0.325, 0.3, 0.275, 0.25, 0.225, 0.2]
@@ -49,6 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var player = SKSpriteNode()
     private var testBox = SKSpriteNode()
     private var upgrade = SKSpriteNode()
+    private var heli = SKSpriteNode()
     private var heliBullet = SKSpriteNode()
     private var heliBulletAdd = SKSpriteNode()
     private var heliBulletSub = SKSpriteNode()
@@ -90,6 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         getRandom()
         //heliTimer()
         helicopter()
+        updateHeliWings()
         
         backgroundColor = SKColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
@@ -223,23 +226,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let helicopterPath = UIBezierPath()
             helicopterPath.move(to: CGPoint(x: 0, y: screenHeight + 10))
-            helicopterPath.addLine(to: CGPoint(x: 0, y: screenHeight - 200))
+            helicopterPath.addLine(to: CGPoint(x: 0, y: screenHeight - 400))
             
             let heliPath2 = UIBezierPath()
-            heliPath2.addArc(withCenter: CGPoint(x: 20, y: screenHeight - 200), radius: 20, startAngle: .pi, endAngle: 3 * .pi + 0.00000000000001, clockwise: true)
-            heliPath2.addArc(withCenter: CGPoint(x: -20, y: screenHeight - 200), radius: 20, startAngle: 0, endAngle: 2 * .pi + 0.00000000000001, clockwise: false)
+            heliPath2.addArc(withCenter: CGPoint(x: 20, y: screenHeight - 400), radius: 20, startAngle: .pi, endAngle: 3 * .pi + 0.00000000000001, clockwise: true)
+            heliPath2.addArc(withCenter: CGPoint(x: -20, y: screenHeight - 400), radius: 20, startAngle: 0, endAngle: 2 * .pi + 0.00000000000001, clockwise: false)
             
             let heliPath3 = UIBezierPath()
-            heliPath3.move(to: CGPoint(x: 0, y: screenHeight - 200))
-            heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 200))
+            heliPath3.move(to: CGPoint(x: 0, y: screenHeight - 400))
+            heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 400))
             isHeliAlive = true
             var tempHeli: Enemy = Enemy()
-            tempHeli.enemyNode = SKSpriteNode(imageNamed: "tf")
+            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopterPlus"), SKTexture(imageNamed: "helicopterCross")], timePerFrame: 2)
+            let sequenceHelicopter = SKAction.sequence([animate])
             let helicopter = tempHeli.enemyNode
             tempHeli.HP = 1000
             tempHeli.baseHP = 1000
             helicopter.name = "helicopter"
-            helicopter.setScale(0.3)
+            helicopter.setScale(0.8)
             helicopter.zPosition = 3
             helicopter.physicsBody = SKPhysicsBody(rectangleOf: helicopter.size)
             helicopter.physicsBody!.affectedByGravity = false
@@ -251,6 +255,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             enemies.append(tempHeli)
             HelicopterOnScreen = helicopter
             self.addChild(helicopter)
+            heli = helicopter
+            helicopter.run(sequenceHelicopter, withKey: "moving")
             
             let movement = SKAction.follow(helicopterPath.cgPath, asOffset: false, orientToPath: false, speed: 75)
             let movement2 = SKAction.follow(heliPath2.cgPath, asOffset: false, orientToPath: false, speed: 75)
@@ -514,7 +520,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func timerHeliWeapon() {
-        HeliWeaponTimer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true, block: { Timer in
+        HeliWeaponTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { Timer in
             if (self.isHeliAlive){
                 self.enemyBullet()
             }
@@ -532,6 +538,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func enemyTimer(){
         EnemyTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(self.enemy), userInfo: nil, repeats: true)
+    }
+    
+    func updateHeliWings(){
+        HeliSpriteTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true, block: { Timer in
+            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopterPlus"), SKTexture(imageNamed: "helicopterCross")], timePerFrame: 0.15)
+            let sequenceHelicopter = SKAction.sequence([animate])
+            self.heli.run(sequenceHelicopter, withKey: "moving")
+        })
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
