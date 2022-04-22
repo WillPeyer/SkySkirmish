@@ -45,7 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case bullet = 6
         case enemy = 8
     }
-    
+    //pinle
     let spaceShipTexture = SKTexture(imageNamed: "small_dot")
     private var player = SKSpriteNode()
     private var testBox = SKSpriteNode()
