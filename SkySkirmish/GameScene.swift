@@ -239,11 +239,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var tempHeli: Enemy = Enemy()
             let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 2)
             let sequenceHelicopter = SKAction.sequence([animate])
-            let helicopter = tempHeli.enemyNode
+            var helicopter = tempHeli.enemyNode
             tempHeli.HP = 1000
             tempHeli.baseHP = 1000
+            helicopter = SKSpriteNode(imageNamed: "helicopter +")
             helicopter.name = "helicopter"
-            helicopter.setScale(0.8)
+            helicopter.setScale(1.4)
             helicopter.zPosition = 3
             helicopter.physicsBody = SKPhysicsBody(texture: helicopter.texture!, size: helicopter.texture!.size())
             helicopter.physicsBody!.affectedByGravity = false
