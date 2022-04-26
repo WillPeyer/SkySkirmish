@@ -237,7 +237,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 400))
             isHeliAlive = true
             var tempHeli: Enemy = Enemy()
-            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopterPlus"), SKTexture(imageNamed: "helicopterCross")], timePerFrame: 2)
+            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 2)
             let sequenceHelicopter = SKAction.sequence([animate])
             let helicopter = tempHeli.enemyNode
             tempHeli.HP = 1000
@@ -245,7 +245,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             helicopter.name = "helicopter"
             helicopter.setScale(0.8)
             helicopter.zPosition = 3
-            helicopter.physicsBody = SKPhysicsBody(rectangleOf: helicopter.size)
+            helicopter.physicsBody = SKPhysicsBody(texture: helicopter.texture!, size: helicopter.texture!.size())
             helicopter.physicsBody!.affectedByGravity = false
             helicopter.physicsBody!.allowsRotation = false
             helicopter.physicsBody!.categoryBitMask = CollisionType.enemy.rawValue
@@ -366,9 +366,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var testEnemy: Enemy = Enemy()
             testEnemy.HP = 200
             testEnemy.baseHP = 200
-            testBox = SKSpriteNode(imageNamed: "blueRectangle")
+            testBox = SKSpriteNode(imageNamed: "enemyship")
             testBox.name = enemyName
-            testBox.setScale(0.2)
+            testBox.setScale(1)
             testBox.zPosition = 2
             testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
             testBox.physicsBody?.isDynamic = false
@@ -542,7 +542,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func updateHeliWings(){
         HeliSpriteTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true, block: { Timer in
-            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopterPlus"), SKTexture(imageNamed: "helicopterCross")], timePerFrame: 0.15)
+            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 0.15)
             let sequenceHelicopter = SKAction.sequence([animate])
             self.heli.run(sequenceHelicopter, withKey: "moving")
         })
