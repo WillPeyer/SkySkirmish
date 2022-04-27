@@ -60,7 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         
-        scoreboard.position = CGPoint(x: -UIScreen.main.bounds.width + 100, y: UIScreen.main.bounds.height - 100)
+        scoreboard.position = CGPoint(x: -UIScreen.main.bounds.width + 100, y: UIScreen.main.bounds.height - 200)
         scoreboard.text = String(score)
         scoreboard.fontSize = 75
         scoreboard.fontColor = SKColor.white
@@ -92,7 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         getRandom()
         //heliTimer()
         helicopter()
-        updateHeliWings()
+        //updateHeliWings()
         
         backgroundColor = SKColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
@@ -145,8 +145,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let index = findEnemy(body: body2)
                 let tempEnemy = enemies[index]
                 
-                body1.node?.removeFromParent()
-                
                 if(tempEnemy.HP <= 0){
                     if body2.node?.name == "helicopter" {
                         isHeliAlive = false
@@ -157,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     body2.node?.removeFromParent()
                     enemies.remove(at: index)
                 }
-                
+                body1.node?.removeFromParent()
                 //runGameOver()
             }
 
@@ -205,7 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     @objc func upgradeObject() {
         upgrade = SKSpriteNode(imageNamed: "upgradeCircle")
         upgrade.name = "upgrade"
-        upgrade.position = CGPoint(x: 0, y: 0)
+        upgrade.position = HelicopterOnScreen.position
         upgrade.setScale(0.8)
         upgrade.zPosition = 1
         upgrade.physicsBody = SKPhysicsBody(texture: upgrade.texture!, size: upgrade.texture!.size())
@@ -237,8 +235,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             heliPath3.addLine(to: CGPoint(x: screenWidth + 10, y: screenHeight - 400))
             isHeliAlive = true
             var tempHeli: Enemy = Enemy()
-            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 2)
-            let sequenceHelicopter = SKAction.sequence([animate])
+            
+//            let animate = SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 2)
+//            let sequenceHelicopter = SKAction.sequence([animate])
+            
             var helicopter = tempHeli.enemyNode
             tempHeli.HP = 1000
             tempHeli.baseHP = 1000
@@ -257,7 +257,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             HelicopterOnScreen = helicopter
             self.addChild(helicopter)
             heli = helicopter
-            helicopter.run(sequenceHelicopter, withKey: "moving")
+            //helicopter.run(sequenceHelicopter, withKey: "moving")
+            helicopter.run(SKAction.repeatForever(
+                SKAction.animate(with: [SKTexture(imageNamed: "helicopter +"), SKTexture(imageNamed: "Helicopter x")], timePerFrame: 0.15)
+            ))
             
             let movement = SKAction.follow(helicopterPath.cgPath, asOffset: false, orientToPath: false, speed: 75)
             let movement2 = SKAction.follow(heliPath2.cgPath, asOffset: false, orientToPath: false, speed: 75)
@@ -365,8 +368,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if isPlayerAlive && !gamePaused {
             let enemyName = "enemy" + String(enemyIdentifier)
             var testEnemy: Enemy = Enemy()
-            testEnemy.HP = 200
-            testEnemy.baseHP = 200
+            testEnemy.HP = 100
+            testEnemy.baseHP = 100
             testBox = SKSpriteNode(imageNamed: "enemyship")
             testBox.name = enemyName
             testBox.setScale(1)
