@@ -371,7 +371,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             testBox.name = enemyName
             testBox.setScale(1)
             testBox.zPosition = 2
-            testBox.physicsBody = SKPhysicsBody(rectangleOf: testBox.size)
+            testBox.physicsBody = SKPhysicsBody(texture: testBox.texture!, size: testBox.texture!.size())
             testBox.physicsBody?.isDynamic = false
             testBox.physicsBody?.isResting = true
             testBox.physicsBody!.affectedByGravity = false
