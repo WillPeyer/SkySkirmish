@@ -10,6 +10,6 @@ In the beginning we started out by making basic player movement with a set maxim
 
 Currently, we are in the middle of designing and inplementing enemy flight paths using UIBezierPaths. We are also adding different types of enemies (such as heliopters) which can drop different power ups to aid you in progressing in the game. We also only have place-holdler art and are working on creating and adding the actualy art.
 
-<img src="https://github.com/WillPeyer/SkySkirmish/blob/main/21CA8E32-BEF2-465B-BA54-73C1C7DA782D.jpeg" width="250" height="400">
+<img src="https://github.com/WillPeyer/SkySkirmish/blob/main/34787D0C-1514-447E-B8E9-1A232B987F77.jpeg" width="250" height="400">
 
 In the future, we plan to create strutured levels with set events along with a proper UI interface. We also plan to add a scoreboard, a pause button, and enemies shotting back at the player.
